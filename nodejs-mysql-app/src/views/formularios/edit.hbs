@@ -1,0 +1,44 @@
+<div class="container p-4">
+    <div class="row">
+        <div class="col-md-4  mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <form action="/formularios/edit/{{formulario.id}}" method="POST">
+                        <div class="form-grup">
+                            <input type="Text" value="{{formulario.Nombredelproyecto}}"class="form-control"name= "Nombredelproyecto" placeholder="Nombre del Proyecto"autofocus>
+                        </div>
+                        <div class="from-group">
+                            <input type="Text" value="{{formulario.metrica1}}"class="form-control"name="metrica1" placeholder="Metricas 1">
+                        </div>
+                        <div class="from-group">
+                            <input type="Text" value="{{formulario.metrica2}}" class="form-control"name="metrica2" placeholder="Metricas 2">
+                        </div>
+                        <div class="from-group">
+                            <input type="Text" value="{{formulario.metrica3}}"class="form-control"name="metrica3" placeholder="Metricas 3">
+                        </div>
+                        <div class="from-group">
+                            <input type="Text" value="{{formulario.opcion1}}"class="form-control"name="opcion1" placeholder="Opcion 1">
+                        </div>
+                        <div class="from-group">
+                            <input type="Text" value="{{formulario.opcion2}}"class="form-control"name="opcion2" placeholder="Opcion 2">
+                        </div>
+                        <div class="from-group">
+                            <input type="Text" value="{{formulario.FechaInicio}}"class="form-control"name="FechaInicio" placeholder="Fecha Inicio">
+                        </div>
+                        <div class="from-group">
+                            <input type="Text" value="{{formulario.FechaTermino}}"class="form-control"name="FechaTermino" placeholder="Fecha Termino">
+                        </div>
+                        <div class="from-group">
+                            <textarea class="form-control" name="descripcion" placeholder="Descripcion" rows="2">{{formulario.descripcion}}</textarea>
+                        </div>
+                        <div class="from-group">
+                          <button class="btn btn-success btn-lg w-100">
+                              Guardar Edicion
+                          </button>  
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

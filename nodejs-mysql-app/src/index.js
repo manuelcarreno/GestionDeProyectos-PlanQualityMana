@@ -3,7 +3,13 @@ const express = require('express');
 const morgan = require('morgan');
 const {engine} = require ('express-handlebars');
 const path = require ('path');
+const flash=require('connect-flash');
+const session = require ('express-session');
+const mysqlstore = require ('express-mysql-session');
+const {database} = require ('./keys');
+
 const app = express(); 
+
 
 //Ajustes
 app.set('port',4000);
@@ -19,13 +25,23 @@ app.engine('.hbs', engine({
 app.set('view engine', '.hbs');
 
 //Middlewares
+app.use(session({
+    secret:'plan quality management ',
+    resave: false,
+    saveUninitialized: false,
+    store: new mysqlstore(database)
+}));
+app.use(flash());
 app.use(morgan( 'dev'));
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 //Variables Globales
 app.use((req, res, next)=> {
+    app.locals.aceptado=req.flash('Aceptado');
     next();
 });
+
+
 
 //Routes
 app.use(require( './routes/index.js'));
@@ -35,6 +51,7 @@ app.use('/formularios',require( './routes/formularios'));
 
 //Variables Publicas
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 //Arranque de servidor
 app.listen(app.get('port'), () => {

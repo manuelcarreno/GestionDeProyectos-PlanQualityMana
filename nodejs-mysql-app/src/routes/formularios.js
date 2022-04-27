@@ -6,17 +6,55 @@ const pool= require('../database');
 router.get('/add', (req, res) => {
     res.render('formularios/add');
 });
-router.post('/add',async (req, res) => {
-    /*const{Nombredelproyecto,metrica1,metrica2,metrica3,opcion1,opcion2,FechaInicio,Fechatermino,descripcion} = req.body;
+router.post('/add',async  (req, res) => {
+    const{Nombredelproyecto,metrica1,metrica2,metrica3,opcion1,opcion2,FechaInicio,FechaTermino,descripcion} = req.body;
     const NewFormulario = {
-        Nombredelproyecto,metrica1,metrica2,metrica3,opcion1,opcion2,FechaInicio,Fechatermino,descripcion
+        Nombredelproyecto,
+        metrica1,
+        metrica2,
+        metrica3,
+        opcion1,
+        opcion2,
+        FechaInicio,
+        FechaTermino,
+        descripcion
     };
-    await pool.query('INSERT INTO formularios ?',[NewFormulario]);
-    res.send('FORMULARIO GUARDADO')*/
-    console.log(req.body)
+    await pool.query('INSERT INTO formularios set ?',[NewFormulario]);
+    req.flash('Aceptado','Plan Guardado de Manera Exitosa');
+    res.redirect('/formularios');
 });   
-router.post('/', async (req, res) => {
+router.get('/', async (req, res) => {
     const formularios = await pool.query('SELECT *FROM formularios');
+    res.render('formularios/list',{formularios:formularios});
+});
+router.get('/delete/:id', async (req, res)=> {
+    const {id}= req.params;
+    await pool.query('DELETE FROM formularios WHERE ID = ?',[id]);
+    req.flash('Aceptado','Plan Eliminado Satisfactoriamente');
+    res.redirect('/formularios');
+});
+router.get('/edit/:id', async (req, res)=> {
+    const {id}= req.params;
+    const formularios = await pool.query('SELECT * FROM formularios WHERE id = ?',[id]);
+    res.render('formularios/edit',{formulario: formularios[0]});
+});
+router.post('/edit/:id', async (req, res)=> {
+    const {id}= req.params;
+    const{Nombredelproyecto,metrica1,metrica2,metrica3,opcion1,opcion2,FechaInicio,FechaTermino,descripcion} = req.body;
+    const NewFormulario = {
+        Nombredelproyecto,
+        metrica1,
+        metrica2,
+        metrica3,
+        opcion1,
+        opcion2,
+        FechaInicio,
+        FechaTermino,
+        descripcion
+    };
+    await pool.query('UPDATE formularios set ? WHERE id= ?',[NewFormulario,id]);
+    req.flash('Aceptado','Plan Editado Satisfactoriamente');
+    res.redirect('/formularios');
 });
 
 module.exports = router;
