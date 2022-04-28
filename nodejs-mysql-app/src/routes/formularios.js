@@ -18,22 +18,27 @@ router.post('/add',isLoggedIn,async  (req, res) => {
         opcion2,
         FechaInicio,
         FechaTermino,
-        descripcion
+        descripcion,
+        users_id: req.user.id 
     };
     await pool.query('INSERT INTO formularios set ?',[NewFormulario]);
     req.flash('Aceptado','Plan Guardado de Manera Exitosa');
     res.redirect('/formularios');
 });   
 router.get('/',isLoggedIn, async (req, res) => {
-    const formularios = await pool.query('SELECT *FROM formularios');
+    const formularios = await pool.query('SELECT *FROM formularios WHERE users_id = ?',[req.user.id]);
     res.render('formularios/list',{formularios:formularios});
 });
+
+
 router.get('/delete/:id',isLoggedIn, async (req, res)=> {
     const {id}= req.params;
     await pool.query('DELETE FROM formularios WHERE ID = ?',[id]);
     req.flash('Aceptado','Plan Eliminado Satisfactoriamente');
     res.redirect('/formularios');
 });
+
+
 router.get('/edit/:id',isLoggedIn, async (req, res)=> {
     const {id}= req.params;
     const formularios = await pool.query('SELECT * FROM formularios WHERE id = ?',[id]);
@@ -51,7 +56,7 @@ router.post('/edit/:id',isLoggedIn, async (req, res)=> {
         opcion2,
         FechaInicio,
         FechaTermino,
-        descripcion
+        descripcion,
     };
     await pool.query('UPDATE formularios set ? WHERE id= ?',[NewFormulario,id]);
     req.flash('Aceptado','Plan Editado Satisfactoriamente');
